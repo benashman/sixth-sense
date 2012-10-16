@@ -3,7 +3,7 @@
 
 #include "credentials.h"
 
-byte server[] = {178, 79, 187, 163};
+byte server[] = {192, 168, 0, 5};
 
 WiFlyClient client(server, 8081);
 
@@ -63,6 +63,10 @@ void loop () {
       Serial.print(sensorID);
       Serial.print(": ");
       Serial.print(message);
+
+      client.print(sensorID);
+      client.print(": ");
+      client.print(message);
 
       message = "";
 
