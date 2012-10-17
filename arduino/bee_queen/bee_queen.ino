@@ -3,9 +3,9 @@
 
 #include "credentials.h"
 
-byte server[] = {192, 168, 0, 5};
+byte server[] = {169, 254, 171, 46};
 
-WiFlyClient client(server, 8081);
+WiFlyClient client(server, 8888);
 
 #define statusLED 13
 
@@ -58,20 +58,18 @@ void loop () {
     char c = Serial.read();
 
     //We're at the end of the line
-    if ( c == '!' ) {
+    if (c == '!') {
 
       Serial.print(sensorID);
       Serial.print(": ");
       Serial.print(message);
 
-      client.print(sensorID);
-      client.print(": ");
-      client.print(message);
+      client.println(message);
 
       message = "";
 
     //Get the sensor ID
-    } else if ( c == ' ') {
+    } else if (c == ' ') {
 
       sensorID = message;
 
