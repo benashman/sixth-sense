@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<palettes>
+	<palette>
+		<colour r="0" g="0" b="0" />
+		<colour r="14" g="3" b="44" />
+		<colour r="23" g="4" b="71" />
+		<colour r="34" g="6" b="104" />
+		<colour r="29" g="5" b="90" />
+	</palette>
+	<palette>
+		<colour r="0" g="0" b="134" />
+		<colour r="91" g="46" b="184" />
+		<colour r="156" g="53" b="194" />
+		<colour r="216" g="12" b="173" />
+		<colour r="209" g="115" b="195" />
+	</palette>
+	<palette>
+		<colour r="30" g="67" b="71" />
+		<colour r="59" g="79" b="77" />
+		<colour r="91" g="88" b="88" />
+		<colour r="158" g="90" b="109" />
+		<colour r="242" g="80" b="127" />
+	</palette>
+		<palette>
+		<colour r="195" g="209" b="122" />
+		<colour r="178" g="181" b="64" />
+		<colour r="127" g="120" b="39" />
+		<colour r="88" g="68" b="69" />
+		<colour r="56" g="25" b="56" />
+	</palette>
+	<palette>
+		<colour r="231" g="255" b="77" />
+		<colour r="184" g="255" b="115" />
+		<colour r="136" g="255" b="154" />
+		<colour r="89" g="255" b="192" />
+		<colour r="41" g="255" b="230" />
+	</palette>
+</palettes>
