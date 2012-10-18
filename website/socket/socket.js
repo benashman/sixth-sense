@@ -28,10 +28,14 @@ netServer = net.createServer(function (stream) {
 
 	stream.on('data', function (data) {
 
-		data = data.toString('utf8');
+		data = data.toString('utf8').replace('\r', '').replace('\n', '');
 
 		var sensorID = data.charAt(0),
 			reading = data.split(' ')[1].replace('!', '');
+
+		console.log("Data: " + data);
+		console.log("Sensor ID: " + sensorID);
+		console.log("Reading: " + reading);
 
 		switch (sensorID) {
 
@@ -41,6 +45,8 @@ netServer = net.createServer(function (stream) {
 
 				console.log('Heat: ' + reading);
 
+				reading = "";
+
 			break;
 
 			case "1":
@@ -48,6 +54,8 @@ netServer = net.createServer(function (stream) {
 				io.sockets.emit('light', {reading: reading});
 
 				console.log('Light: ' + reading);
+
+				reading = "";
 
 			break;
 

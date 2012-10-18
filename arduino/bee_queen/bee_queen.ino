@@ -3,7 +3,7 @@
 
 #include "credentials.h"
 
-byte server[] = {169, 254, 182, 132};
+byte server[] = {169, 254, 70, 102};
 
 WiFlyClient client(server, 8888);
 
