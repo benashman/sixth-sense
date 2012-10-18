@@ -28,10 +28,10 @@ netServer = net.createServer(function (stream) {
 
 	stream.on('data', function (data) {
 
-		data = data.toString('utf8').replace('\r', '').replace('\n', '');
+		data = data.toString('utf8').replace(/(\r\n|\n|\r|!)/gm, "");
 
 		var sensorID = data.charAt(0),
-			reading = data.split(' ')[1].replace('!', '');
+			reading = data.split(' ')[1];
 
 		console.log("Data: " + data);
 		console.log("Sensor ID: " + sensorID);
