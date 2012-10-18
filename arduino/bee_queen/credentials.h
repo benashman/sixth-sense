@@ -3,6 +3,6 @@
 
 // Wifi parameters
 char passphrase[] = "password";
-char ssid[] = "MBP";
+char ssid[] = "datwall";
 
 #endif
