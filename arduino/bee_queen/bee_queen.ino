@@ -3,9 +3,9 @@
 
 #include "credentials.h"
 
-byte server[] = {169, 254, 70, 102};
+byte server[] = {178, 79, 187, 163};
 
-WiFlyClient client(server, 8888);
+WiFlyClient client(server, 8081);
 
 #define statusLED 13
 
@@ -84,5 +84,3 @@ void loop () {
   }
 
 }
-
-
