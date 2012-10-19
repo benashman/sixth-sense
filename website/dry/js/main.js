@@ -20,9 +20,16 @@ window.onload = function() {
     var stageW = view.size.width;
     var stageH = view.size.height;
 
+    var lightBg = new Path.Rectangle(0,0, stageW/2, stageH);
+    lightBg.fillColor = '#3eb555';
+    lightBg.opacity = 0.25;
+    
+    var heatBg = new Path.Rectangle(stageW/2, 0, stageW/2, stageH);
+    heatBg.fillColor = '#d05f0a';
+    heatBg.opacity = 0.25;
+
     var lightRect = new Path.Rectangle(0,stageH, stageW/2, stageH);
     lightRect.fillColor = '#3eb555';
-
     
     var heatRect = new Path.Rectangle(stageW/2, stageH, stageW/2, stageH);
     heatRect.fillColor = '#d05f0a';
@@ -37,7 +44,25 @@ window.onload = function() {
     lightText.justification = 'right';
     lightText.fillColor = 'white';
     lightText.fontSize = 120;
-    lightText.content = lightVal;  
+    lightText.content = lightVal; 
+
+    var lightLabel = new Path.Rectangle(50,stageH-150, stageW/2-100, 150);
+    lightLabel.fillColor = 'black';
+    
+    var heatLabel = new Path.Rectangle(stageW/2+50, stageH-150, stageW/2-100, 150);
+    heatLabel.fillColor = 'black'; 
+
+    var heatLabelText = new PointText(new Point(stageW/2+115, stageH-45));
+    heatLabelText.justification = 'left';
+    heatLabelText.fillColor = 'white';
+    heatLabelText.fontSize = 80;        
+    heatLabelText.content = "Heat";   
+
+    var lightLabelText = new PointText(new Point(110, stageH-45));
+    lightLabelText.justification = 'left';
+    lightLabelText.fillColor = 'white';
+    lightLabelText.fontSize = 80;
+    lightLabelText.content = "Light"; 
 
     function scrollNum(value, current){ 
         var diff = value - current;
@@ -66,15 +91,14 @@ window.onload = function() {
             range = 100;
         }
         
-       var theHeight = parseInt((stageH * (theVar / range)));
-       
-        
-         for (var i = 1; i < 3; i++){
+       var theHeight = parseInt((stageH * ( 1-(theVar / range))));
+       console.log((theVar / range))
+        for (var i = 1; i < 3; i++){
              if(theBar.segments[i].point.y != theHeight){
-                 var vector = (theHeight - theBar.segments[i].point.y) ;
-                 theBar.segments[i].point.y += vector/5;
-             }
-         }
+                var vector = (theHeight - theBar.segments[i].point.y) ;
+                theBar.segments[i].point.y += parseInt(vector/5);
+            }
+        }
     }
 
     view.onFrame = function(event) {
