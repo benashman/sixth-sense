@@ -1,107 +1,113 @@
+paper.install(window);
+window.onload = function() {
+    var canvas = document.getElementById('dryCanvas');
+    paper.setup(canvas);
 
-var currentHeat = 75;
-var currentLight = 64;
-
-
-
-function r(limit){
-    return Math.floor(Math.random()*limit);
-}
-
-function randUpdate(){
-    // var rand = r(15);
-    // if(r(2) == 0){
-    //     return +rand;
-    // } else {
-    //     return -rand;
-    // }
-    return r(99);
-}
+    var heatVal = "20";
+    var lightVal = 89;
+    var heatCur = 7;
+    var lightCur = 9;
+    
+    function randUpdate(){
+        return Math.floor(Math.random()*99);
+    }
 
     setInterval(function(){
-        //currentLight += randUpdate();
-        currentHeat = randUpdate();
+        heatVal = Math.floor(Math.random() * 40);
+        lightVal = Math.floor(Math.random()*100);
     },3000);
+
+    var stageW = view.size.width;
+    var stageH = view.size.height;
+
+    var lightBg = new Path.Rectangle(0,0, stageW/2, stageH);
+    lightBg.fillColor = '#3eb555';
+    lightBg.opacity = 0.25;
     
-    // var diagLine = new Path();
-    // diagLine.strokeColor = 'black';
-    // var start = new Point(currentHeat, currentLight);
-    // diagLine.moveTo(start);
-    // diagLine.lineTo(start + [ (currentHeat*2), (currentLight*2) ]);
+    var heatBg = new Path.Rectangle(stageW/2, 0, stageW/2, stageH);
+    heatBg.fillColor = '#d05f0a';
+    heatBg.opacity = 0.25;
 
+    var lightRect = new Path.Rectangle(0,stageH, stageW/2, stageH);
+    lightRect.fillColor = '#3eb555';
     
+    var heatRect = new Path.Rectangle(stageW/2, stageH, stageW/2, stageH);
+    heatRect.fillColor = '#d05f0a';
 
-    // var rect = new Rectangle( 100, 100, 500, 500);
-    // rect.fillColor = 'green';
-    // console.log(rect);
+    var heatText = new PointText(new Point(stageW - 25, 150));
+    heatText.justification = 'right';
+    heatText.fillColor = 'white';
+    heatText.fontSize = 120;        
+    heatText.content = heatVal;   
 
-    // var circle = new Path.Circle(new Point(80, 50), 30);
-    // circle.fillColor = 'green';
+    var lightText = new PointText(new Point(stageW/2 - 25, 150));
+    lightText.justification = 'right';
+    lightText.fillColor = 'white';
+    lightText.fontSize = 120;
+    lightText.content = lightVal; 
 
+    var lightLabel = new Path.Rectangle(50,stageH-150, stageW/2-100, 150);
+    lightLabel.fillColor = 'black';
     
-    var pathRect = new Path.Rectangle(0,0, view.size.width, view.size.height);
-    pathRect.fillColor = 'black';
-    console.log(pathRect);
+    var heatLabel = new Path.Rectangle(stageW/2+50, stageH-150, stageW/2-100, 150);
+    heatLabel.fillColor = 'black'; 
 
-    // var textLight = new PointText(new Point(500, 100));
-    // textLight.justification = 'center';
-    // textLight.fillColor = 'black';
-    // textLight.content = currentLight;
+    var heatLabelText = new PointText(new Point(stageW/2+115, stageH-45));
+    heatLabelText.justification = 'left';
+    heatLabelText.fillColor = 'white';
+    heatLabelText.fontSize = 80;        
+    heatLabelText.content = "Heat";   
 
-    var textHeat = new PointText(new Point(view.size.width - 25, 300));
-    textHeat.justification = 'right';
-    textHeat.fillColor = 'white';
-    textHeat.fontSize = 150;
-    textHeat.content = currentHeat;
-    
+    var lightLabelText = new PointText(new Point(110, stageH-45));
+    lightLabelText.justification = 'left';
+    lightLabelText.fillColor = 'white';
+    lightLabelText.fontSize = 80;
+    lightLabelText.content = "Light"; 
 
-    function scrollNum(val, text){ 
-        var diff = val - text;
-        if(text != val){
-            if(diff > 0){
-                text = parseInt(text) + 1
+    function scrollNum(value, current){ 
+        var diff = value - current;
+        if(current != value){
+            if(diff > 50){
+                current = parseInt(current) + 50
+            } else if(diff > 10){
+                current = parseInt(current) + 10
+            } else if(diff > 0){
+                current = parseInt(current) + 1
             } else if(diff < 0){
-                text = parseInt(text) - 1
+                current = parseInt(current) - 1
+            } else if(diff < -10){
+                current = parseInt(current) - 10
+            } else if(diff < -50){
+                current = parseInt(current) - 50
             }
         }
-        return text;
+        return current;
     }
-    
-    var theHeight;
-
-    function onFrame(event) {
-        textHeat.content = scrollNum(currentHeat, textHeat.content);
-        theHeight = (view.size.height * (currentHeat / 100));
-        //pathRect.segments[1].point.y =  theHeight;
-        //pathRect.segments[2].point.y = theHeight;
+    function updateBars(theBar, theVar){
+        var range;
+        if (theBar == heatRect){
+            range = 40;
+        } else if (theBar == lightRect) {
+            range = 100;
+        }
+        
+       var theHeight = parseInt((stageH * ( 1-(theVar / range))));
+       console.log((theVar / range))
         for (var i = 1; i < 3; i++){
-            if(pathRect.segments[i].point.y != theHeight){
-                var vector = theHeight - pathRect.segments[i].point.y;
-                pathRect.segments[i].point.y += vector/5;
+             if(theBar.segments[i].point.y != theHeight){
+                var vector = (theHeight - theBar.segments[i].point.y) ;
+                theBar.segments[i].point.y += parseInt(vector/5);
             }
         }
-        textHeat.position.y = pathRect.segments[1].point.y + 180;
-        
-
-        //textLight.content = scrollNum(currentLight, textLight.content);
-        
-
-        //textHeat.content = currentHeat;
-        //textLight.content = currentLight;
-        // circle.fillColor.hue += 1;
-        // pathRect.size = (currentHeat, currentLight);
-        // if(pathRect.bounds.height != currentHeat){
-        //     var vector = currentHeat - pathRect.position.y;
-        //     pathRect.bounds.height += vector/5;
-        // }
-        //pathRect.scale(1,2);
-        //textHeat.position = pathRect.position.centerTop - 50;
     }
 
-    
-
-    function onResize(event) {
-        // Whenever the view is resized, move the pathRect to its center:
-        //pathRect.size.width = view.size.width;
-        //console.log(pathRect.width);
+    view.onFrame = function(event) {
+        heatText.content = scrollNum(heatVal, heatText.content);
+        lightText.content = scrollNum(lightVal, lightText.content);
+        updateBars(heatRect, heatVal);
+        updateBars(lightRect, lightVal);
+      
+         lightText.position.y = lightRect.segments[1].point.y + 140;
+         heatText.position.y = heatRect.segments[1].point.y + 140;
     }
+}
