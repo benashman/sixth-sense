@@ -12,6 +12,8 @@ WiFlyClient client(server, 8081);
 String message;
 String sensorID; 
 
+bool wiflyConnected = false;
+
 int lightThreshold = 100;
 int tempThreshold = 100;
 
@@ -21,31 +23,32 @@ void setup () {
 
   WiFly.begin();
 
-  if (!WiFly.join(ssid, passphrase, true)) {
+  if (WiFly.join(ssid, passphrase, true)) {
 
-    Serial.println("Connection to WiFi failed.");
+    wiflyConnected = true;
 
-    while (1) {
+    delay(1000);
 
-      // hang
+    Serial.println("Connecting...");
+
+    if (client.connect()) {
+
+      Serial.println("Connected.");
+
+    } else {
+
+      Serial.println("Connection to client failed.");
 
     }
 
-  }
-
-  delay(1000);
-
-  Serial.println("Connecting...");
-
-  if (client.connect()) {
-
-    Serial.println("Connected.");
-
   } else {
 
-    Serial.println("Connection to client failed.");
+    Serial.println("Connection to WiFi failed.");
 
   }
+
+  Serial.print("wiflyConnected: ");
+  Serial.println(wiflyConnected);
 
   pinMode(statusLED, OUTPUT);
 
@@ -64,7 +67,11 @@ void loop () {
       Serial.print(" ");
       Serial.println(message);
 
-      client.println(sensorID + " " + message);
+      if (wiflyConnected == true) {
+
+        client.println(sensorID + " " + message);
+
+      }
 
       message = "";
 
