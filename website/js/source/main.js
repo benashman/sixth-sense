@@ -6,13 +6,21 @@ require(['plugins/log', 'jquery', 'socket.io', 'plugins/paper'], function (log, 
 
 		light: 0,
 
+		showLabels: true,
+
 		init: function () {
 
 			var self = this;
 
 			self.socketConnect();
 
-			console.log('Main initiated: ', self);
+			if ($(window).width() <= 480) {
+
+				self.showLabels = false;
+
+			}
+
+			// console.log('Main initiated: ', self);
 
 		},
 
@@ -34,23 +42,21 @@ require(['plugins/log', 'jquery', 'socket.io', 'plugins/paper'], function (log, 
 
 				self.user = data;
 
-				console.log('Connected: ', self.user);
-
 			});
 
 			self.socket.on('heat', function (data) {
 
 				self.heat = parseInt(data.reading);
 
-				console.log('Heat data:', self.heat);
+				// console.log('Heat data:', self.heat);
 
 			});
 
 			self.socket.on('light', function (data) {
 
-				self.light = parseInt(data.reading);
+				self.light = parseInt(data.reading / 10);
 
-				console.log('Light data:', self.light);
+				// console.log('Light data:', self.light);
 
 			});
 
@@ -62,11 +68,12 @@ require(['plugins/log', 'jquery', 'socket.io', 'plugins/paper'], function (log, 
 
 		main.init();
 
-		var heatVal = main.heat;
-		var lightVal = main.light;
+		var canvas = $('#dryCanvas')[0];
+
+		paper.setup(canvas);
 		
 		var stageW = view.size.width;
-    var stageH = view.size.height;
+    	var stageH = view.size.height;
 
     var lightBg = new Path.Rectangle(0,0, stageW/2, stageH);
     lightBg.fillColor = '#3eb555';
@@ -85,32 +92,38 @@ require(['plugins/log', 'jquery', 'socket.io', 'plugins/paper'], function (log, 
     var heatText = new PointText(new Point(stageW - 25, 150));
     heatText.justification = 'right';
     heatText.fillColor = 'white';
-    heatText.fontSize = 120;        
-    heatText.content = heatVal;   
+    heatText.fontSize = 120;       
+    heatText.content = main.heat;   
 
     var lightText = new PointText(new Point(stageW/2 - 25, 150));
     lightText.justification = 'right';
     lightText.fillColor = 'white';
     lightText.fontSize = 120;
-    lightText.content = lightVal; 
+    lightText.content = main.light; 
 
-    var lightLabel = new Path.Rectangle(50,stageH-150, stageW/2-100, 150);
-    lightLabel.fillColor = 'black';
-    
-    var heatLabel = new Path.Rectangle(stageW/2+50, stageH-150, stageW/2-100, 150);
-    heatLabel.fillColor = 'black'; 
+    if (main.showLabels) {
 
-    var heatLabelText = new PointText(new Point(stageW/2+115, stageH-45));
-    heatLabelText.justification = 'left';
-    heatLabelText.fillColor = 'white';
-    heatLabelText.fontSize = 80;        
-    heatLabelText.content = "Heat";   
+	    var lightLabel = new Path.Rectangle(0, stageH-150, stageW/2, 150);
+	    lightLabel.fillColor = 'black';
+	    lightLabel.opacity = 0.6;
+	    
+	    var heatLabel = new Path.Rectangle(stageW/2, stageH-150, stageW/2, 150);
+	    heatLabel.fillColor = 'black';
+	    heatLabel.opacity = 0.6; 
 
-    var lightLabelText = new PointText(new Point(110, stageH-45));
-    lightLabelText.justification = 'left';
-    lightLabelText.fillColor = 'white';
-    lightLabelText.fontSize = 80;
-    lightLabelText.content = "Light"; 
+	    var heatLabelText = new PointText(new Point((stageW/4)*3, stageH-45));
+	    heatLabelText.justification = 'center';
+	    heatLabelText.fillColor = 'white';
+	    heatLabelText.fontSize = 80;        
+	    heatLabelText.content = "Heat";   
+
+	    var lightLabelText = new PointText(new Point(stageW/4, stageH-45));
+	    lightLabelText.justification = 'center';
+	    lightLabelText.fillColor = 'white';
+	    lightLabelText.fontSize = 80;
+	    lightLabelText.content = "Light";
+
+	}
 
     function scrollNum(value, current){ 
         var diff = value - current;
@@ -140,7 +153,7 @@ require(['plugins/log', 'jquery', 'socket.io', 'plugins/paper'], function (log, 
         }
         
        var theHeight = parseInt((stageH * ( 1-(theVar / range))));
-       console.log((theVar / range))
+
         for (var i = 1; i < 3; i++){
              if(theBar.segments[i].point.y != theHeight){
                 var vector = (theHeight - theBar.segments[i].point.y) ;
@@ -150,15 +163,14 @@ require(['plugins/log', 'jquery', 'socket.io', 'plugins/paper'], function (log, 
     }
 
     view.onFrame = function(event) {
-        heatText.content = scrollNum(heatVal, heatText.content);
-        lightText.content = scrollNum(lightVal, lightText.content);
-        updateBars(heatRect, heatVal);
-        updateBars(lightRect, lightVal);
+        heatText.content = scrollNum(main.heat, heatText.content);
+        lightText.content = scrollNum(main.light, lightText.content);
+        updateBars(heatRect, main.heat);
+        updateBars(lightRect, main.light);
       
          lightText.position.y = lightRect.segments[1].point.y + 140;
          heatText.position.y = heatRect.segments[1].point.y + 140;
     }
-
 	
 	});
 
