@@ -109,16 +109,20 @@ void keyReleased() {
 }
 
 void serialEvent(Serial myPort) {
-  if(myPort.available() > 0){
-    String input = myPort.readStringUntil('\n');
-    if(input != null){
-      if(input.charAt(0) == '0'){
-        heatViz.feedValue(float(input.substring(2)));
-      }
-      else if(input.charAt(0) == '1'){
-        lightViz.feedValue(float(input.substring(2)));
+  try {
+    if(myPort.available() > 0){
+      String input = myPort.readStringUntil('\n');
+      if(input != null){
+        if(input.charAt(0) == '0'){
+          heatViz.feedValue(float(input.substring(2)));
+        }
+        else if(input.charAt(0) == '1'){
+          lightViz.feedValue(float(input.substring(2)));
+        }
       }
     }
+  } catch (NullPointerException e) {
+    println("No Connection.");
   }
 }
 

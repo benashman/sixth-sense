@@ -33,16 +33,16 @@ class Heat extends Element {
     if(lastReading > 1.0 && lastReading <= 14.0) {
       return 0;
     }
-    else if(lastReading > 14.0 && lastReading <= 18.0) {
+    else if(lastReading > 14.0 && lastReading <= 21.0) {
       return 1;
     }
-    else if(lastReading > 18.0 && lastReading <= 24.0){
+    else if(lastReading > 21.0 && lastReading <= 24.0){
       return 2;
     }
-    else if(lastReading > 24.0 && lastReading <= 30.0){
+    else if(lastReading > 24.0 && lastReading <= 28.0){
       return 3;
     }
-    else if(lastReading > 30.0){
+    else if(lastReading > 28.0){
       return 4;
     }
     else {
