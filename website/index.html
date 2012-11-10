@@ -1,20 +1,39 @@
 <!DOCTYPE html>
-<html class="no-js">
+<html>
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
-        
-        <link rel="stylesheet" type="text/css" href="css/style.css">
 
-        <title>iWonderWall — Live Data Feed</title>
+        <title>Sixth Sense — Live Data Feed</title>
+
+        <link rel="stylesheet" type="text/css" href="css/main.css">
     </head>
     <body>
-        <canvas id="dryCanvas" resize></canvas>
+        <article id="heat">
+            <header>
+                <hgroup>
+                    <h1 class="label">Heat / °c</h1>
+                </hgroup>
+            </header>
+            <div class="column">
+                <span class="value">0</span>
+            </div>
+        </article>
+
+        <article id="sound">
+            <header>
+                <hgroup>
+                    <h1 class="label">Sound / ?</h1>
+                </hgroup>
+            </header>
+            <div class="column">
+                <span class="value">0</span>
+            </div>
+        </article>
 
         <script>
             var config = {
-                    debugMode: 1,
-                    ga: 'UA-XXXXXXXX-X'
+                    debugMode: 1
                 },
                 require = {
                     baseUrl: (config.debugMode) ? 'js/source/' : 'js',
