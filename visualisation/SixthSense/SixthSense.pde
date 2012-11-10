@@ -1,4 +1,3 @@
-
 import processing.serial.*;
 
 Palette[] palettes;
@@ -19,7 +18,7 @@ void setup() {
   size(displayWidth, displayHeight, P3D);
   smooth();
   
-  String portName = Serial.list()[4];
+  String portName = Serial.list()[6];
   myPort = new Serial(this, portName, 9600);
   
   XML xml = loadXML("data/swatches.xml");
@@ -126,3 +125,6 @@ void serialEvent(Serial myPort) {
   }
 }
 
+boolean sketchFullScreen() {
+  return true;
+}

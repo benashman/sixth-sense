@@ -1,4 +1,4 @@
-require(['plugins/log', 'jquery', 'socket.io', 'plugins/jquery.easing', 'plugins/jquery.color'], function (log, $) {
+require(['plugins/log', 'jquery', 'socket.io', 'plugins/jquery.easing'], function (log, $) {
 	
 	var main = {
 
@@ -18,7 +18,7 @@ require(['plugins/log', 'jquery', 'socket.io', 'plugins/jquery.easing', 'plugins
 
 			value: 0,
 
-			max: 100,
+			max: 20,
 
 			$value: $('#sound .value'),
 
@@ -66,7 +66,7 @@ require(['plugins/log', 'jquery', 'socket.io', 'plugins/jquery.easing', 'plugins
 
 			self.socket.on('heat', function (data) {
 
-				self.heat = parseInt(data.reading);
+				self.heat.value = parseInt(data.reading);
 
 				self.animate(self.heat);
 
@@ -76,7 +76,9 @@ require(['plugins/log', 'jquery', 'socket.io', 'plugins/jquery.easing', 'plugins
 
 			self.socket.on('light', function (data) {
 
-				self.light = parseInt(data.reading / 10);
+				self.light.value = parseInt(data.reading / 10);
+
+				console.log(self.light.value);
 
 				self.animate(self.light);
 

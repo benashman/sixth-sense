@@ -2,7 +2,7 @@
 #define __CREDENTIALS_H__
 
 // Wifi parameters
-char passphrase[] = "thisistheshit";
-char ssid[] = "_";
+char passphrase[] = "password";
+char ssid[] = "datwall";
 
 #endif
